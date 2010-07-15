@@ -103,7 +103,7 @@ public final class CakePhpFrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public PhpModuleIgnoredFilesExtender getIgnoredFilesExtender(PhpModule phpModule) {
-        return null;
+        return new CakePhpIgnoredFilesExtender(phpModule);
     }
 
     @Override
