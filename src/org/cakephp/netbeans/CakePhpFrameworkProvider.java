@@ -5,9 +5,15 @@
 package org.cakephp.netbeans;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 import org.netbeans.modules.php.api.phpmodule.BadgeIcon;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.phpmodule.PhpModuleProperties;
+import org.netbeans.modules.php.api.util.FileUtils;
 import org.netbeans.modules.php.spi.commands.FrameworkCommandSupport;
 import org.netbeans.modules.php.spi.editor.EditorExtender;
 import org.netbeans.modules.php.spi.phpmodule.PhpFrameworkProvider;
@@ -15,6 +21,7 @@ import org.netbeans.modules.php.spi.phpmodule.PhpModuleActionsExtender;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleExtender;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleIgnoredFilesExtender;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
@@ -23,6 +30,12 @@ public final class CakePhpFrameworkProvider extends PhpFrameworkProvider {
     // TODO: provide better badge icon
     private static final String ICON_PATH = "org/cakephp/netbeans/ui/resources/cakephp_badge_8.png"; // NOI18N
     private static final CakePhpFrameworkProvider INSTANCE = new CakePhpFrameworkProvider();
+    private static final Comparator<File> FILE_COMPARATOR = new Comparator<File>() {
+        @Override
+        public int compare(File o1, File o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+    };
 
     private final BadgeIcon badgeIcon;
 
@@ -52,7 +65,24 @@ public final class CakePhpFrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public File[] getConfigurationFiles(PhpModule phpModule) {
-        return new File[0];
+        // return all php files from app/config
+        List<File> configFiles = new LinkedList<File>();
+
+        FileObject config = phpModule.getSourceDirectory().getFileObject("app/config"); // NOI18N
+        assert config != null : "app/config not found for CakePHP project " + phpModule.getDisplayName();
+        if (config != null && config.isFolder()) {
+            Enumeration<? extends FileObject> children = config.getChildren(true);
+            while (children.hasMoreElements()) {
+                FileObject child = children.nextElement();
+                if (child.isData() && FileUtils.isPhpFile(child)) {
+                    configFiles.add(FileUtil.toFile(child));
+                }
+            }
+        }
+        if (!configFiles.isEmpty()) {
+            Collections.sort(configFiles, FILE_COMPARATOR);
+        }
+        return configFiles.toArray(new File[configFiles.size()]);
     }
 
     @Override
