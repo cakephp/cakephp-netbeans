@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+TODO: add license
+-->
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <folder name="Actions">
+        <folder name="PHP">
+            <file name="org-cakephp-netbeans-ui-actions-RunBakeAction.instance">
+                <attr name="instanceCreate" methodvalue="org.cakephp.netbeans.ui.actions.RunBakeAction.getInstance"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>

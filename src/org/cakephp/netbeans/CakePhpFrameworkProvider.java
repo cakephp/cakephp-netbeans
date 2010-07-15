@@ -98,7 +98,7 @@ public final class CakePhpFrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public PhpModuleActionsExtender getActionsExtender(PhpModule phpModule) {
-        return null;
+        return new CakePhpActionsExtender();
     }
 
     @Override
