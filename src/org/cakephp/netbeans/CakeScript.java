@@ -60,6 +60,7 @@ public class CakeScript extends PhpProgram {
 
     @Override
     public String validate() {
+        // TODO: WARNING: perhaps no reliable way to find out whether the cake command is executable (INFO message to IDE log is written)
         return FileUtils.validateScript(getProgram(), NbBundle.getMessage(CakeScript.class, "LBL_CakeTool"));
     }
 
