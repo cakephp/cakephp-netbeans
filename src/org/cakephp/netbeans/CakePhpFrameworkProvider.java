@@ -25,6 +25,7 @@ import org.openide.filesystems.FileUtil;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
+// TODO: in static block, consider registering *.ctp as a php mime-type (can be dangerous, do it only if it's not already set!)
 public final class CakePhpFrameworkProvider extends PhpFrameworkProvider {
 
     // TODO: provide better badge icon
